@@ -8,6 +8,9 @@ import (
 	"gorm.io/driver/sqlite"
 )
 
+type DescribeSitesInfo struct {
+}
+
 func ReSessionStorageConn() func() *gorm.DB {
 	var db *gorm.DB
 
@@ -24,4 +27,8 @@ func ReSessionStorageConn() func() *gorm.DB {
 		}
 		return db
 	}
+}
+
+func LoadSitesToMemory() {
+
 }

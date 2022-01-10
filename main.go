@@ -2,17 +2,18 @@ package main
 
 import (
 	"context"
+	"lightning/server"
 	"log"
 	"os"
 	"os/signal"
-	"runtime"
 	"syscall"
 	"time"
 )
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
 	ctx, cancel := context.WithCancel(context.Background())
+
+	go server.StartServ(ctx)
 
 	sigterm := make(chan os.Signal, 1)
 	signal.Notify(sigterm, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
