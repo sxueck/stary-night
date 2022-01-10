@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万籁俱寂 - 正在点灯</title>
+    <link rel="shortcut icon" href="assets/favicon.png">
+    <script src="assets/travelling.js"></script>
+
+    <style type="text/css">
+
+        * {
+            color: #111827;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .blink {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            justify-content: center;
+            animation: blink 3s linear infinite;
+            -webkit-animation: blink 3s linear infinite;
+            -moz-animation: blink 3s linear infinite;
+            -ms-animation: blink 3s linear infinite;
+            -o-animation: blink 3s linear infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            40% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1.2);
+            }
+        }
+
+        @-webkit-keyframes blink {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            40% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1.2);
+            }
+        }
+
+        @-moz-keyframes blink {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            40% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1.2);
+            }
+        }
+
+        @-ms-keyframes blink {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            40% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1.2);
+            }
+        }
+
+        @-o-keyframes blink {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            40% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(0.98);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(1.2);
+            }
+        }
+
+        .botCenter {
+            position: fixed;
+            width: 100%;
+            height: 50px;
+            bottom: 2px;
+            line-height: 20px;
+            font-size: 12px;
+            text-align: center;
+            animation: botCenter 3s linear;
+            -webkit-animation: botCenter 3s linear;
+            -moz-animation: botCenter 3s linear;
+            -ms-animation: botCenter 3s linear;
+            -o-animation: botCenter 3s linear;
+        }
+
+        @keyframes botCenter {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.3;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes botCenter {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.3;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-moz-keyframes botCenter {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.3;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-ms-keyframes botCenter {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.3;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-o-keyframes botCenter {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 0.3;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="blink">
+    <span>纵然是最深沉的黑夜，也遮不住一丝光亮<br />To be or not to be, that's a question.</span>
+</div>
+
+
+<div class="botCenter">
+    ↩️ Tips: <b>后退</b>网页可再次点亮<br />
+    <a href="https://github.com/sxueck/lightning" target="_blank">🐺 Github</a>
+</div>
+
+<script>
+    window.setTimeout("window.location.href='javascript:travelling()'", 10000);
+</script>
+
+</body>
+
+</html>
