@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"gorm.io/gorm"
 	"lightning/config"
 	"lightning/storage"
 	"log"
@@ -14,6 +15,10 @@ import (
 
 type CustomContext struct {
 	echo.Context // encapsulate the original context
+}
+
+func (cc *CustomContext) GetDBConn() func() *gorm.DB {
+
 }
 
 func StartServ(ctx context.Context) {
@@ -64,4 +69,14 @@ func ListAllSites(c echo.Context) error {
 	}
 
 	return c.String(http.StatusOK, string(sitesListResult))
+}
+
+func AddMembersHandler(c echo.Context) error {
+	var ds = storage.DescribeSitesInfo{}
+	err := c.Bind(&ds)
+	if err != nil {
+		return c.String(http.StatusInternalServerError,
+			fmt.Sprintf("error parsing user json : %s", err))
+	}
+
 }

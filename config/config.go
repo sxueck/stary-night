@@ -12,6 +12,7 @@ var Cfg = &cfg{}
 type cfg struct {
 	Port    string `env:"HTTP_PORT" envDefault:"80"`
 	Address string `env:"LISTEN_ADDRESS" envDefault:"127.0.0.1"`
+	DBName  string `env:"DB_NAME" envDefault:"storage.db"`
 }
 
 func ArgsEnv(st interface{}) {
