@@ -36,5 +36,9 @@ menu:
 ```
 您可以使用 `探星` 或 `点灯` 等一切您认为合适的词汇
 
+## 其他文档
+* [部署文档](documents/installation.md)
+* [开发进度](documents/development.md)
+
 ## 致谢项目
 * [友链接力](https://github.com/volfclub/travellings) : 使用并修改了项目的 index.html，根据 MPL 2.0 协议标准，需要指出对源码的修改，并沿用协议
