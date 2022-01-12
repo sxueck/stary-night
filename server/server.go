@@ -39,7 +39,7 @@ func StartServ(ctx context.Context) {
 	e.GET("/api/v1/list", ListAllSites)
 
 	go func() {
-		errChan <- e.Start(fmt.Sprintf(":%s", config.Cfg.Port))
+		errChan <- e.Start(fmt.Sprintf("%s:%s", config.Cfg.Address, config.Cfg.Port))
 	}()
 
 	for {
@@ -57,8 +57,6 @@ func StartServ(ctx context.Context) {
 func ListAllSites(c echo.Context) error {
 	dss := c.Get("DescribeSites").(context.Context).
 		Value("ds").(func() []storage.DescribeSitesInfo)
-
-	fmt.Println(dss())
 
 	sitesListResult, err := json.Marshal(dss())
 	if err != nil {

@@ -10,7 +10,8 @@ import (
 var Cfg = &cfg{}
 
 type cfg struct {
-	Port string `env:"HTTP_PORT" envDefault:"80"`
+	Port    string `env:"HTTP_PORT" envDefault:"80"`
+	Address string `env:"LISTEN_ADDRESS" envDefault:"127.0.0.1"`
 }
 
 func ArgsEnv(st interface{}) {
