@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>新成员收录入口</title>
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
+
+    <style>
+        :root {
+            --brandColor: hsl(166, 67%, 51%);
+            --textDark: hsla(0, 0%, 0%, 0.66);
+            --textLight: hsla(0, 0%, 0%, 0.33);
+
+            --shadowDark: #D9DDE6;
+            --shadowLight: #EFF5FE;
+        }
+
+        body {
+            /*background: var(--background);*/
+            color: var(--textDark);
+        }
+
+        .field:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+
+        .welcome {
+            margin-top: 10rem;
+            background: white;
+
+            border-radius: 25px;
+            padding: 1.5rem;
+            box-shadow: 8px 8px 15px var(--shadowDark), -8px -8px 15px var(--shadowLight);
+        }
+
+        .left,
+        .right {
+            padding: 4.5rem;
+        }
+
+        .left {
+            border-right: 5px solid var(--background);
+        }
+
+        .left .title {
+            font-weight: 800;
+            letter-spacing: -2px;
+        }
+
+        .left .colored {
+            color: var(--brandColor);
+            font-weight: 500;
+            margin-top: 1rem !important;
+            letter-spacing: -1px;
+        }
+
+        .left p {
+            color: var(--textLight);
+            font-size: 1.15rem;
+        }
+
+        .right .title {
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .right .description {
+            margin-top: 1rem;
+            margin-bottom: 1rem !important;
+            color: var(--textLight);
+            font-size: 1.15rem;
+        }
+
+        .right small {
+            color: var(--textLight);
+        }
+
+        input {
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: var(--brandColor) !important;
+            box-shadow: 0 0 0 1px var(--brandColor) !important;
+        }
+
+    </style>
+</head>
+
+<body>
+<section class="container">
+    <div class="columns is-multiline">
+        <div class="column is-8 is-offset-2 welcome">
+            <div class="columns">
+                <div class="column left welcome-title">
+                    <h1 class="title is-1">看 有生面孔</h1>
+                    <h2 class="subtitle colored is-4">也许我们又多了一位伙伴</h2>
+                    <p>这里是 Lightning 计划的收录入口</p>
+                </div>
+                <div class="column right has-text-centered">
+                    <h1 class="title is-4">网站基本信息</h1>
+                    <form>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="站点地址">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="作者名称">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="联系方式 ( QQ / WeChat / 邮件 )">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-small" type="text" placeholder="给你的网站来句台词吧">
+                            </div>
+                        </div>
+                        <button class="button is-block is-primary is-fullwidth is-medium">提交</button>
+                        <br />
+                        <small><em>请确认这些都是可以被公开的资料</em></small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+
+</html>

@@ -18,7 +18,7 @@ type CustomContext struct {
 }
 
 func (cc *CustomContext) GetDBConn() func() *gorm.DB {
-
+	return nil
 }
 
 func StartServ(ctx context.Context) {
@@ -78,5 +78,5 @@ func AddMembersHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError,
 			fmt.Sprintf("error parsing user json : %s", err))
 	}
-
+	return nil
 }

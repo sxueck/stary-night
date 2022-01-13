@@ -14,9 +14,13 @@ import (
 const DBTableName = "sites"
 
 type DescribeSitesInfo struct {
-	Name    string    `json:"name"`
-	URL     string    `json:"url"`
-	Author  string    `json:"author"`
+	Name   string `json:"name"`
+	URL    string `json:"url"`
+	Author string `json:"author"`
+
+	// Can use QQ / weixin / mailbox three types
+	// acceptance is not differentiated
+	Contact string    `json:"contact"`
 	Lastmod time.Time `json:"lastmod"`
 }
 
@@ -49,6 +53,7 @@ func LoadSitesToMemory(db func() *gorm.DB, memory chan<- []DescribeSitesInfo) er
 		if err != nil {
 			return fmt.Errorf("The database fails to extract website information : %s\n", err)
 		}
+		log.Println("data cache update completed")
 		memory <- ds
 	}
 
