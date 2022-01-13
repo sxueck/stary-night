@@ -107,7 +107,7 @@ func RenderStaticPages(c echo.Context) error {
 		resName = fmt.Sprintf("%s.html", resName)
 	}
 
-	return template.Must()
+	return c.Render(http.StatusOK, resName, nil)
 }
 
 func AddMembersHandler(c echo.Context) error {
