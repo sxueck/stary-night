@@ -20,8 +20,9 @@ type DescribeSitesInfo struct {
 
 	// Can use QQ / weixin / mailbox three types
 	// acceptance is not differentiated
-	Contact string    `json:"contact"`
-	Lastmod time.Time `json:"lastmod"`
+	Contact     string    `json:"contact"`
+	Lastmod     time.Time `json:"lastmod"`
+	Description string    `json:"description"`
 }
 
 func ReSessionStorageConn() func() *gorm.DB {
