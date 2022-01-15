@@ -25,10 +25,14 @@ type DescribeSitesInfo struct {
 	Description string    `json:"description"`
 }
 
-func ReSessionStorageConn() func() *gorm.DB {
+type DBConn struct {
+	*gorm.DB
+}
+
+func ReSessionStorageConn() func() *DBConn {
 	var db *gorm.DB
 
-	return func() *gorm.DB {
+	return func() *DBConn {
 		var err error
 		if db == nil || reflect.DeepEqual(db, &gorm.DB{}) {
 			db, err = gorm.Open(sqlite.Open(config.Cfg.DBName), &gorm.Config{
@@ -39,13 +43,13 @@ func ReSessionStorageConn() func() *gorm.DB {
 				return nil
 			}
 		}
-		return db
+		return &DBConn{db}
 	}
 }
 
-func LoadSitesToMemory(db func() *gorm.DB, memory chan<- []DescribeSitesInfo) error {
+func LoadSitesToMemory(db *DBConn, memory chan<- []DescribeSitesInfo) error {
 	var sitesCount int64 = 0
-	sitesConn := db().Debug().Table(DBTableName)
+	sitesConn := db.Debug().Table(DBTableName)
 	sitesConn.Count(&sitesCount)
 
 	var ds = make([]DescribeSitesInfo, sitesCount)
@@ -61,10 +65,34 @@ func LoadSitesToMemory(db func() *gorm.DB, memory chan<- []DescribeSitesInfo) er
 	return nil
 }
 
-func AddMembers(db func() *gorm.DB, member DescribeSitesInfo) error {
+func (d *DBConn) AddMembers(member DescribeSitesInfo) error {
 	if reflect.DeepEqual(member, &DescribeSitesInfo{}) {
 		return fmt.Errorf("please do not pass in empty members")
 	}
 
-	return db().Debug().Table(DBTableName).Create(&member).Error
+	if haveRepetition, err := d.repeatedSiteChecks(member); err != nil {
+		return fmt.Errorf("errors occurred while checking for duplicates ：%s", err)
+	} else {
+		if haveRepetition {
+			return fmt.Errorf("this url already exists")
+		}
+	}
+
+	return d.Debug().Table(DBTableName).Create(&member).Error
+}
+
+func (d *DBConn) repeatedSiteChecks(member DescribeSitesInfo) (bool, error) {
+	var count int64 = 0
+	if err := d.Debug().
+		Table(DBTableName).
+		Count(&count).
+		Where("url = ?", member.URL).Error; err != nil {
+		return false, err
+	}
+
+	if count == 0 {
+		return false, nil
+	}
+
+	return true, nil
 }

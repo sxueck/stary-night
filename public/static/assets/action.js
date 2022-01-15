@@ -3,12 +3,12 @@ const allSitesCookieName = "AllResult"
 function lightning() {
     let v = getCookie(allSitesCookieName)
     if (v === "") {
+        console.log("cookie not found")
         axios.get('/api/v1/list', {
             responseType: 'json',
         }).then(function (res) {
             v = JSON.stringify(res.data)
             setCookie(allSitesCookieName, v, 60 * 3) // 3min
-
         }).catch(function (err) {
             console.log(err);
         });
