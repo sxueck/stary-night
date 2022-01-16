@@ -24,7 +24,9 @@ RUN apk add -U tzdata \
     && rm -rf /var/cache/apk/*
 COPY --from=builder /go/bin/starry-night .
 COPY public public/
-COPY storage.db .
+COPY storage.db databases/
+
+ENV DB_NAME "databases/storage.db"
 
 ENV BASE_PATH /
 

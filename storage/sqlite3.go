@@ -85,8 +85,8 @@ func (d *DBConn) repeatedSiteChecks(member DescribeSitesInfo) (bool, error) {
 	var count int64 = 0
 	if err := d.Debug().
 		Table(DBTableName).
-		Count(&count).
-		Where("url = ?", member.URL).Error; err != nil {
+		Where("url = '?'", member.URL).
+		Count(&count).Error; err != nil {
 		return false, err
 	}
 
