@@ -10,7 +10,9 @@ import (
 	"lightning/spider"
 	"lightning/storage"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type CustomContext struct {
@@ -44,6 +46,7 @@ func StartServ(ctx context.Context) {
 	e.Static("/", "public")
 	e.GET("/api/v1/list", ListAllSites)
 	e.POST("/api/v1/site", AddMembersHandler)
+	e.GET("/api/v1/ran_url", RandomSite)
 
 	go func() {
 		errChan <- e.Start(fmt.Sprintf("%s:%s", config.Cfg.Address, config.Cfg.Port))
@@ -97,4 +100,19 @@ func AddMembersHandler(c echo.Context) error {
 		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error writing to database : %s", err))
 	}
 	return c.String(http.StatusOK, ds.Name)
+}
+
+func RandomSite(c echo.Context) error {
+	dss := c.Get("DescribeSites").(context.Context).
+		Value("ds").(func() []storage.DescribeSitesInfo)
+
+	rand.Seed(time.Now().Unix())
+	ran := rand.Intn(len(dss()))
+
+	result, err := json.Marshal(dss()[ran])
+	if err != nil {
+		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] gives random site errors : %s", err))
+	}
+
+	return c.String(http.StatusOK, string(result))
 }

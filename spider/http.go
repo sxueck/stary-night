@@ -71,6 +71,14 @@ func WithAppendHeaders(kv map[string]string, overwrite bool) *Option {
 	}
 }
 
+func WithObjectTimeout(timeout int) *Option {
+	return &Option{
+		apply: func(option *requestOptions) {
+			option.timeout = time.Duration(timeout) * time.Microsecond
+		},
+	}
+}
+
 func exBody(res *http.Response) []byte {
 	bs, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -153,4 +161,18 @@ func GzipUnCompress(data []byte) (*[]byte, error) {
 
 		return &unData, nil
 	}
+}
+
+func SurvivalChecks(url string) bool {
+	res, err := HttpRequestReader("GET", url, WithObjectTimeout(400))
+	if err != nil {
+		log.Printf("%s inaccessible : %s", url, err)
+		return false
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return false
+	}
+
+	return true
 }
