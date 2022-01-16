@@ -4,6 +4,8 @@ function post_sites_describe() {
     let contact = $("#contact").val()
     let description = $("#description").val()
 
+    $("#remind").text("系统正在检查您的网站")
+
     $.ajax({
         url: "/api/v1/site",
         method: "POST",
@@ -16,10 +18,12 @@ function post_sites_describe() {
             contact: contact,
             description: description
         }),
-        success: function (res){
+        success: function (res) {
             if (res.indexOf("[ERROR]") === -1) {
                 $("#welcome-look").text("赞 比超棒还棒")
                 $("#welcome-who").text(res + " 里边请")
+                $("#remind").text("添加成功, 请等待下一个轮询器周期结束(~20min)即可")
+                window.setTimeout(BackReturn, 2000);
             } else {
                 $("#welcome-who").text("这是详细的错误消息")
                 $("#welcome-prompt").text(res)
@@ -31,4 +35,8 @@ function post_sites_describe() {
             console.log(e)
         }
     })
+}
+
+function BackReturn() {
+    window.history.go(-1)
 }

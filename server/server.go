@@ -84,7 +84,7 @@ func AddMembersHandler(c echo.Context) error {
 		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error parsing user json : %s", err))
 	}
 
-	if ds.URL == "" {
+	if len(ds.URL) == 0 {
 		return c.String(http.StatusNotFound, "[ERROR] parameter error")
 	}
 
@@ -107,6 +107,11 @@ func RandomSite(c echo.Context) error {
 		Value("ds").(func() []storage.DescribeSitesInfo)
 
 	rand.Seed(time.Now().Unix())
+
+	if len(dss()) == 0 {
+		return c.String(http.StatusOK,"[ERROR] currently no web site exists")
+	}
+
 	ran := rand.Intn(len(dss()))
 
 	result, err := json.Marshal(dss()[ran])
