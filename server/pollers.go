@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"lightning/storage"
 	"log"
 	"time"
@@ -13,9 +12,9 @@ func GlobalPollers(ctx context.Context) func() []storage.DescribeSitesInfo {
 	db := storage.ReSessionStorageConn()
 	var ticker = time.NewTicker(time.Hour)
 
-	go func(db func() *gorm.DB, ds chan<- []storage.DescribeSitesInfo) {
+	go func(db func() *storage.DBConn, ds chan<- []storage.DescribeSitesInfo) {
 		go func() {
-			err := storage.LoadSitesToMemory(db, ds)
+			err := storage.LoadSitesToMemory(db(), ds)
 			if err != nil {
 				log.Println(err)
 				return

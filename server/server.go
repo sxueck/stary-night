@@ -6,40 +6,28 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"gorm.io/gorm"
-	"html/template"
-	"io"
 	"lightning/config"
+	"lightning/spider"
 	"lightning/storage"
 	"log"
 	"net/http"
-	"regexp"
-	"strings"
 )
 
 type CustomContext struct {
 	echo.Context // encapsulate the original context
 }
 
-type EchoTemplate struct {
-	templates *template.Template
-}
-
-func (t *EchoTemplate) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
-
-func (cc *CustomContext) GetDBConn() func() *gorm.DB {
-	return nil
+func (cc *CustomContext) GetDBConn() func() *storage.DBConn {
+	return storage.ReSessionStorageConn()
 }
 
 func StartServ(ctx context.Context) {
 	var errChan chan error
 	e := echo.New()
 	e.HideBanner = true
-	e.Renderer = &EchoTemplate{}
 
 	e.Use(middleware.CORS())
+	e.Use(middleware.Logger())
 
 	gpollers := GlobalPollers(ctx)
 	webCtx := context.WithValue(ctx, "ds", gpollers)
@@ -53,21 +41,9 @@ func StartServ(ctx context.Context) {
 		}
 	})
 
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			if found, _ := regexp.MatchString("\\.(html|htm)", c.Request().RequestURI); found {
-				return c.String(http.StatusForbidden,
-					"please do not access web resources directly")
-			}
-
-			return next(c)
-		}
-	})
-
-	//e.Static("/", "public")
-	e.Static("/static", "public/static")
-	e.Any("/", RenderStaticPages)
+	e.Static("/", "public")
 	e.GET("/api/v1/list", ListAllSites)
+	e.POST("/api/v1/site", AddMembersHandler)
 
 	go func() {
 		errChan <- e.Start(fmt.Sprintf("%s:%s", config.Cfg.Address, config.Cfg.Port))
@@ -97,25 +73,28 @@ func ListAllSites(c echo.Context) error {
 	return c.String(http.StatusOK, string(sitesListResult))
 }
 
-func RenderStaticPages(c echo.Context) error {
-	reqURL := c.Request().RequestURI
-	var resNameSplitIndex = strings.LastIndex(reqURL, "/")
-	var resName = reqURL[resNameSplitIndex:]
-	if found, _ := regexp.MatchString(
-		"[a-zA-z]+://[^\\s]*?/[^\\s]*?[/|.]", reqURL); !found {
-		// like x.x/1.jpg
-		resName = fmt.Sprintf("%s.html", resName)
-	}
-
-	return c.Render(http.StatusOK, resName, nil)
-}
-
 func AddMembersHandler(c echo.Context) error {
+	cc := c.(*CustomContext)
 	var ds = storage.DescribeSitesInfo{}
 	err := c.Bind(&ds)
 	if err != nil {
-		return c.String(http.StatusInternalServerError,
-			fmt.Sprintf("error parsing user json : %s", err))
+		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error parsing user json : %s", err))
 	}
-	return nil
+
+	if ds.URL == "" {
+		return c.String(http.StatusNotFound, "[ERROR] parameter error")
+	}
+
+	// here for future users to judge their
+	// own data is correct to leave the interface
+	if ds.Name == "" {
+		ds.Name = spider.ObtainSiteTitle(ds.URL)
+	}
+
+	db := cc.GetDBConn()
+	err = db().AddMembers(ds)
+	if err != nil {
+		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error writing to database : %s", err))
+	}
+	return c.String(http.StatusOK, ds.Name)
 }
