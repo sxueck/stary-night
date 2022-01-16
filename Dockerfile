@@ -23,6 +23,7 @@ RUN apk add -U tzdata \
     && apk add ca-certificates \
     && rm -rf /var/cache/apk/*
 COPY --from=builder /go/bin/starry-night .
+COPY public public/
 COPY storage.db .
 
 ENV BASE_PATH /
