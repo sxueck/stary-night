@@ -18,6 +18,8 @@ func GlobalPollers(ctx context.Context) func() []storage.DescribeSitesInfo {
 	var lowSLA []string
 
 	go func(db func() *storage.DBConn, ds chan<- []storage.DescribeSitesInfo) {
+		go expiredGuard(ctx)
+
 		//	proactively update maintained memory information every hour
 		for {
 			select {
@@ -98,7 +100,21 @@ func ComputeUserRepresentationId(ip, useragent string) string {
 	return fmt.Sprintf("%x", bs)
 }
 
-func ExpiredGuard() {
-	//ticker := time.NewTicker(7 * time.Minute)
-	//
+func expiredGuard(ctx context.Context) {
+	go func() {
+		ticker := time.NewTicker(10 * time.Minute)
+		select {
+		case <-ticker.C:
+			for v, k := range globalServerSessionCache {
+				if time.Now().After(k.Expired) {
+					globalServerSessionCache[v] = SessionColumn{}
+				}
+			}
+
+			ticker.Reset(10 * time.Minute)
+		case <-ctx.Done():
+			log.Println("cache guard exiting")
+		}
+	}()
+
 }
