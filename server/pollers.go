@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"crypto/sha1"
+	"fmt"
 	"lightning/spider"
 	"lightning/storage"
 	"log"
@@ -74,6 +76,7 @@ func CheckTheSLA(ds []storage.DescribeSitesInfo, lowSLA []string) {
 	for i := 0; i < len(ds); i++ {
 		ch <- struct{}{}
 		wg.Add(1)
+
 		go func(i int) {
 			defer wg.Done()
 			u := ds[i].URL
@@ -85,4 +88,17 @@ func CheckTheSLA(ds []storage.DescribeSitesInfo, lowSLA []string) {
 		}(i)
 	}
 	wg.Wait()
+}
+
+func ComputeUserRepresentationId(ip, useragent string) string {
+	s := fmt.Sprintf("%s+%s", ip, useragent)
+	h := sha1.New()
+	h.Write([]byte(s))
+	bs := h.Sum(nil)
+	return fmt.Sprintf("%x", bs)
+}
+
+func ExpiredGuard() {
+	//ticker := time.NewTicker(7 * time.Minute)
+	//
 }

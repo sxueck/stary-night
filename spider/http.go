@@ -185,7 +185,7 @@ func GzipUnCompress(data []byte) (*[]byte, error) {
 		// but there was no more data behind it
 		// that's why the EOF error
 		if err != nil && !strings.Contains(err.Error(), "EOF") {
-			log.Printf("[ParseGzip]  ioutil.ReadAll error: %v\n", err)
+			log.Printf("[ParseGzip] ioutil.ReadAll error: %v\n", err)
 			return nil, err
 		}
 

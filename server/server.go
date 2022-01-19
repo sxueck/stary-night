@@ -10,9 +10,7 @@ import (
 	"lightning/spider"
 	"lightning/storage"
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 type CustomContext struct {
@@ -81,7 +79,8 @@ func AddMembersHandler(c echo.Context) error {
 	var ds = storage.DescribeSitesInfo{}
 	err := c.Bind(&ds)
 	if err != nil {
-		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error parsing user json : %s", err))
+		return c.String(http.StatusOK,
+			fmt.Sprintf("[ERROR] error parsing user json : %s", err))
 	}
 
 	if len(ds.URL) == 0 {
@@ -97,7 +96,8 @@ func AddMembersHandler(c echo.Context) error {
 	db := cc.GetDBConn()
 	err = db().AddMembers(ds)
 	if err != nil {
-		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] error writing to database : %s", err))
+		return c.String(http.StatusOK,
+			fmt.Sprintf("[ERROR] error writing to database : %s", err))
 	}
 	return c.String(http.StatusOK, ds.Name)
 }
@@ -106,17 +106,25 @@ func RandomSite(c echo.Context) error {
 	dss := c.Get("DescribeSites").(context.Context).
 		Value("ds").(func() []storage.DescribeSitesInfo)
 
-	rand.Seed(time.Now().Unix())
-
 	if len(dss()) == 0 {
-		return c.String(http.StatusOK,"[ERROR] currently no web site exists")
+		return c.String(http.StatusOK, "[ERROR] currently no web site exists")
 	}
 
-	ran := rand.Intn(len(dss()))
-
-	result, err := json.Marshal(dss()[ran])
+	token, err := NewUserAccess(c)
 	if err != nil {
-		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] gives random site errors : %s", err))
+		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] %s", err))
+	}
+
+	v, ok := globalServerSessionCache[token]
+	if !ok {
+		return c.String(http.StatusOK,
+			"An unknown error occurred and the user cache does not exist")
+	}
+
+	result, err := json.Marshal(dss()[v.Card[v.Pos]])
+	if err != nil {
+		return c.String(http.StatusOK,
+			fmt.Sprintf("[ERROR] gives random site errors : %s", err))
 	}
 
 	return c.String(http.StatusOK, string(result))
