@@ -3,12 +3,15 @@ package spider
 import (
 	"bytes"
 	"compress/gzip"
+	"crypto/tls"
 	"encoding/binary"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -22,6 +25,7 @@ type requestOptions struct {
 	data      string
 	headers   map[string]string
 	userAgent string
+	proxy     string
 }
 
 type Option struct {
@@ -37,6 +41,7 @@ func defaultRequestOptions() *requestOptions {
 	return &requestOptions{
 		timeout: 5,
 		data:    "",
+		proxy:   "",
 		headers: map[string]string{
 			"User-Agent":      UserAgent,
 			"Accept-Encoding": "gzip",
@@ -71,6 +76,18 @@ func WithAppendHeaders(kv map[string]string, overwrite bool) *Option {
 	}
 }
 
+func WithProxyAddress(addr string) *Option {
+	return &Option{
+		apply: func(option *requestOptions) {
+			if found, _ := regexp.MatchString("^(socks|http).*", addr); found {
+				option.proxy = addr
+			} else {
+				log.Printf("the proxy address is incorrectly set : %s\n", addr)
+			}
+		},
+	}
+}
+
 func WithObjectTimeout(timeout int) *Option {
 	return &Option{
 		apply: func(option *requestOptions) {
@@ -88,13 +105,13 @@ func exBody(res *http.Response) []byte {
 	return bs
 }
 
-func HttpRequestReader(method string, url string, options ...*Option) (*http.Response, error) {
+func HttpRequestReader(method string, URL string, options ...*Option) (*http.Response, error) {
 	reqOpts := defaultRequestOptions()
 	for _, opt := range options {
 		opt.apply(reqOpts)
 	}
 
-	req, err := http.NewRequest(method, url, strings.NewReader(reqOpts.data))
+	req, err := http.NewRequest(method, URL, strings.NewReader(reqOpts.data))
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize http request: %s", err)
 	}
@@ -103,7 +120,20 @@ func HttpRequestReader(method string, url string, options ...*Option) (*http.Res
 		req.Header.Add(key, value)
 	}
 
-	client := http.Client{}
+	ts := &http.Transport{}
+
+	if len(reqOpts.proxy) != 0 {
+		p, _ := url.Parse(reqOpts.proxy)
+		ts = &http.Transport{
+			Proxy:           http.ProxyURL(p),
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+
+	client := http.Client{
+		Transport: ts,
+		//Timeout: reqOpts.timeout,
+	}
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("ERROR : %s", err)
@@ -112,8 +142,8 @@ func HttpRequestReader(method string, url string, options ...*Option) (*http.Res
 	return res, nil
 }
 
-func HttpRequestToBytes(method string, url string, options ...*Option) (*[]byte, error) {
-	res, err := HttpRequestReader(method, url, options...)
+func HttpRequestToBytes(method string, URL string, options ...*Option) (*[]byte, error) {
+	res, err := HttpRequestReader(method, URL, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +185,7 @@ func GzipUnCompress(data []byte) (*[]byte, error) {
 		// but there was no more data behind it
 		// that's why the EOF error
 		if err != nil && !strings.Contains(err.Error(), "EOF") {
-			log.Printf("[ParseGzip]  ioutil.ReadAll error: %v\n", err)
+			log.Printf("[ParseGzip] ioutil.ReadAll error: %v\n", err)
 			return nil, err
 		}
 
@@ -163,10 +193,10 @@ func GzipUnCompress(data []byte) (*[]byte, error) {
 	}
 }
 
-func SurvivalChecks(url string) bool {
-	res, err := HttpRequestReader("GET", url, WithObjectTimeout(400))
+func SurvivalChecks(URL string) bool {
+	res, err := HttpRequestReader("GET", URL, WithObjectTimeout(400))
 	if err != nil {
-		log.Printf("%s inaccessible : %s", url, err)
+		log.Printf("%s inaccessible : %s", URL, err)
 		return false
 	}
 

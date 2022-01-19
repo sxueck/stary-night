@@ -57,3 +57,4 @@ menu:
 ## 致谢 & 许可
 
 * [友链接力](https://github.com/volfclub/travellings) : 使用并修改了项目的 index.html，根据 MPL 2.0 协议标准，需要指出对源码的修改并沿用协议，详情参考 [LICENSE](LICENSE)
+* 阿里巴巴矢量图标库: 项目很多图标都来源于此

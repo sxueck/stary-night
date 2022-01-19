@@ -96,3 +96,15 @@ func (d *DBConn) repeatedSiteChecks(member DescribeSitesInfo) (bool, error) {
 
 	return true, nil
 }
+
+func (d *DBConn) MembersCount() int {
+	var count int64 = 0
+	if err := d.Debug().
+		Table(DBTableName).
+		Count(&count).Error; err != nil {
+		log.Printf("%s\n", err)
+		return 0
+	}
+
+	return int(count)
+}
