@@ -7,3 +7,4 @@
 out
 gen
 storage.db
+.DS_store
