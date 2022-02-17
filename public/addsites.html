@@ -6,137 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新成员收录入口</title>
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.9.0/css/bulma.min.css" />
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="static/assets/addsites.js"></script>
-
-    <style>
-        :root {
-            --brandColor: hsl(166, 67%, 51%);
-            --textDark: hsla(0, 0%, 0%, 0.66);
-            --textLight: hsla(0, 0%, 0%, 0.33);
-
-            --shadowDark: #D9DDE6;
-            --shadowLight: #EFF5FE;
-        }
-
-        body {
-            /*background: var(--background);*/
-            color: var(--textDark);
-        }
-
-        .field:not(:last-child) {
-            margin-bottom: 1rem;
-        }
-
-        .welcome {
-            margin-top: 10rem;
-            background: white;
-
-            border-radius: 25px;
-            padding: 1.5rem;
-            box-shadow: 8px 8px 15px var(--shadowDark), -8px -8px 15px var(--shadowLight);
-        }
-
-        .left,
-        .right {
-            padding: 4.5rem;
-        }
-
-        .left {
-            border-right: 5px solid #D9DDE6;
-        }
-
-        .left .title {
-            font-weight: 800;
-            letter-spacing: -2px;
-        }
-
-        .left .colored {
-            color: var(--brandColor);
-            font-weight: 500;
-            margin-top: 1rem !important;
-            letter-spacing: -1px;
-        }
-
-        .left p {
-            color: var(--textLight);
-            font-size: 1.15rem;
-        }
-
-        .right .title {
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .right .description {
-            margin-top: 1rem;
-            margin-bottom: 1rem !important;
-            color: var(--textLight);
-            font-size: 1.15rem;
-        }
-
-        .right small {
-            color: var(--textLight);
-        }
-
-        input {
-            font-size: 1rem;
-        }
-
-        input:focus {
-            border-color: var(--brandColor) !important;
-            box-shadow: 0 0 0 1px var(--brandColor) !important;
-        }
-
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-<section class="container">
-    <div class="columns is-multiline">
-        <div class="column is-8 is-offset-2 welcome">
-            <div class="columns">
-                <div class="column left welcome-title">
-                    <h1 class="title is-1" id="welcome-look">看 有生面孔</h1>
-                    <h2 class="subtitle colored is-4" id="welcome-who">也许我们又多了一位伙伴</h2>
-                    <p id="welcome-prompt">这里是 Starry-Night 计划的收录入口</p>
-                </div>
-                <div class="column right has-text-centered" id="datum">
-                    <h1 class="title is-4">网站基本信息</h1>
-                    <div>
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-small" id="url" type="text" placeholder="站点地址 (包含 https://)">
-                            </div>
+<body class="antialiased bg-body text-body font-body">
+<div class="">
+    <section class="relative py-20">
+        <div class="container px-4 mx-auto">
+            <div class="w-full lg:w-1/2 mb-12">
+                <div class="lg:max-w-md">
+                    <div class="max-w-md mx-auto text-center py-10">
+                        <span class="text-sm text-gray-500 font-semibold uppercase">Welcome</span>
+                        <h3 class="mb-8 text-2xl font-bold font-heading">Join our community</h3>
+                        <div class="flex">
+                            <input class="w-1/2 mr-2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                                   placeholder="ID">
+                            <input class="w-1/2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                                   placeholder="邮件地址">
                         </div>
-
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-small" id="author" type="text" placeholder="作者名称">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-small" id="contact"  type="text" placeholder="联系方式 ( QQ / WeChat / 邮件 )">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <div class="control">
-                                <input class="input is-small" type="text" id="description" placeholder="给你的网站来句台词吧">
-                            </div>
-                        </div>
-                        <button class="button is-block is-primary is-fullwidth is-medium" onclick="post_sites_describe()">提交</button>
-                        <br />
-                        <small><em id="remind">请确认这些都是可以被公开的资料</em></small>
+                        <input class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="url"
+                               placeholder="网站首页URL">
+                        <input class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                               placeholder="给你的站点来句台词吧">
+                        <label class="inline-block mb-4">
+                            <input class="mr-1" type="checkbox" name="terms" value="1">
+                            <span class="text-sm text-gray-500">我同意遵循 <b>Stary-Night</b> 计划的</span>
+                        </label>
+                        <button class="block w-full mb-4 py-3 text-gray-50 font-semibold bg-gray-500 hover:bg-gray-600 rounded">
+                            Get Started
+                        </button>
+                        <p class="text-sm text-gray-500">
+                            <span>爬虫将会用于存活检测等合法公开用途</span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        <div class="bg-no-repeat bg-center lg:h-auto lg:absolute top-0 right-0 bottom-0 lg:w-1/2 bg-cover"
+             style="background-image: url('./static/images/banner.png');height: 105%"></div>
+    </section>
+</div>
 </body>
 
 </html>
