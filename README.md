@@ -10,13 +10,12 @@
 
 ![](https://img.shields.io/static/v1?label=成员数量&message=N/A&color=informational)
 ![](https://img.shields.io/static/v1?label=最近加入&message=N/A&color=success)
-![](https://img.shields.io/static/v1?label=最近退出&message=N/A&color=important)
 
 TBD
 
 ## 快速加入
 
-- 访问 [新星](https://stary-night.com/new.html)，提交网站信息并等待，自动审核程序将每 30 分钟轮询一次并将通过审核的网站加入 [星图](https://stary-night.com/staratlas.html)。
+- 访问 [新星](https://stary-night.com/addsites.html)，提交网站信息并等待，自动审核程序将每 30 分钟轮询一次并将通过审核的网站加入 [星图](https://stary-night.com/staratlas.html)。
 
 - 随后将项目网址 `https://stary-night.com` 添加到您的网站导航栏、侧边栏等显眼的位置：
 
@@ -49,7 +48,7 @@ TBD
   访问 [更新](https://stary-night.com/update.html) 页面可更改星夜成员的网站信息。请注意，您每天只有一次更改的机会。
 
 - **我该如何退出星夜？**  
-  访问 [退出](https://stary-night.com/quit.html) 页面即可立即退出星夜，我们将在 30 分钟轮询期后删除您的所有数据。
+  访问 [退出](https://stary-night.com/leave.html) 页面即可立即退出星夜，我们将在 30 分钟轮询期后删除您的所有数据。
 
 ## 联系我们
 
