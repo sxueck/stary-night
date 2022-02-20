@@ -8,6 +8,25 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="changed/tailwind.min.css">
     <script src="action/index.js"></script>
+
+    <style>
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        html {
+            /*firefox*/
+            overflow: -moz-hidden-unscrollable;
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: calc(100vw + 18px);
+            overflow: auto;
+        }
+
+    </style>
 </head>
 <body class="antialiased bg-body text-body font-body">
 <div class="">
@@ -62,7 +81,8 @@
             class="block absolute bottom-0 left-0 h-128 w-128 -mb-96 -ml-24" src="images/lines/circle.svg" alt="">
         <div class="container px-3 mx-auto">
             <div class="max-w-3xl mx-auto text-center">
-                <span class="text-lg text-blue-400 font-bold">Stary-Night Come On Here</span>
+                <span class="text-lg text-blue-400 font-bold"></span>
+                <span class="text-lg lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-yellow-200 to-orange-600">Stary-Night Come On Here</span>
                 <h2 class="my-10 text-5xl lg:text-6xl font-bold font-heading text-white">星垂平野阔，月涌大江流</h2>
                 <div class="max-w-md mx-auto">
                     <p class="mb-20 text-lg text-gray-200">—— 杜甫《旅夜书怀》</p>
