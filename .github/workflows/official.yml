@@ -24,4 +24,4 @@ jobs:
           accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
           bucket: ${{ secrets.OSS_NAME }}
           endpoint: oss-cn-hongkong.aliyuncs.com
-          folder: ./public/stars
+          folder: ./public/official

@@ -27,13 +27,22 @@ CREATE TABLE "sites"
     "contact"     varchar  NOT NULL,
     "description" varchar  NOT NULL
 );
+
+CREATE TABLE "subscribes"
+(
+    "id"         integer,
+    "mail"       varchar NOT NULL,
+    "insert"     datetime DEFAULT CURRENT_TIMESTAMP,
+    "webmanager" bool    NOT NULL,
+    PRIMARY KEY (id)
+);
 ```
 
 可以插入一条测试数据
 
 ```sql
-INSERT INTO "sites" ("id", "name", "url", "author", "lastmod","contact","description")
-VALUES ('1', 'epimetheus', 'https://www.sxueck.com/', 'sxueck', '2022-01-11 08:13:23','sxuecks@gmail.com','a sites');
+INSERT INTO "sites" ("id", "name", "url", "author", "lastmod", "contact", "description")
+VALUES ('1', 'epimetheus', 'https://www.sxueck.com/', 'sxueck', '2022-01-11 08:13:23', 'sxuecks@gmail.com', 'a sites');
 ```
 
 ## 直接编译
@@ -49,6 +58,7 @@ $ ./starry-night
 编译时请保证机器内存大于 512M (包括 Swap)，不然会导致 GCC 异常
 
 ## 使用 Docker 进行编译
+
 ```shell
 $ docker build -t starry-night .
 ```

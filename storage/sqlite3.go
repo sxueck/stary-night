@@ -11,7 +11,7 @@ import (
 	"gorm.io/driver/sqlite"
 )
 
-const DBTableName = "sites"
+const DBSitesTableName = "sites"
 
 type DescribeSitesInfo struct {
 	Name   string `json:"name"`
@@ -49,7 +49,7 @@ func ReSessionStorageConn() func() *DBConn {
 
 func LoadSitesToMemory(db *DBConn, memory chan<- []DescribeSitesInfo) error {
 	var sitesCount int64 = 0
-	sitesConn := db.Debug().Table(DBTableName)
+	sitesConn := db.Debug().Table(DBSitesTableName)
 	sitesConn.Count(&sitesCount)
 
 	var ds = make([]DescribeSitesInfo, sitesCount)
@@ -78,13 +78,13 @@ func (d *DBConn) AddMembers(member DescribeSitesInfo) error {
 		}
 	}
 
-	return d.Debug().Table(DBTableName).Create(&member).Error
+	return d.Debug().Table(DBSitesTableName).Create(&member).Error
 }
 
 func (d *DBConn) repeatedSiteChecks(member DescribeSitesInfo) (bool, error) {
 	var count int64 = 0
 	if err := d.Debug().
-		Table(DBTableName).
+		Table(DBSitesTableName).
 		Where("url = '?'", member.URL).
 		Count(&count).Error; err != nil {
 		return false, err
@@ -100,7 +100,7 @@ func (d *DBConn) repeatedSiteChecks(member DescribeSitesInfo) (bool, error) {
 func (d *DBConn) MembersCount() int {
 	var count int64 = 0
 	if err := d.Debug().
-		Table(DBTableName).
+		Table(DBSitesTableName).
 		Count(&count).Error; err != nil {
 		log.Printf("%s\n", err)
 		return 0
