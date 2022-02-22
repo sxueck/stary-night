@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Change to production api server
-        run: grep -lr 'dev.stary-night.com' ./public/official/ | xargs sed -i "" 's/dev.stary-night.com/www.stary-night.com/g'
+        run: sed -i "" 's/dev.stary-night.com/www.stary-night.com/g' `grep -lr 'dev.stary-night.com' public/official/static`
         id: deploy_to_production
 
       - name: Deploy to OSS
