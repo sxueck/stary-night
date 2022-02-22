@@ -11,7 +11,16 @@ import (
 	"lightning/storage"
 	"log"
 	"net/http"
+	"reflect"
 )
+
+/*
+200: Default
+400: Method exception or incorrectly formatted data submitted
+403: Abnormal access
+404: Resources( page / db record ...) do not exist
+502: External component is abnormal procedure
+*/
 
 type CustomContext struct {
 	echo.Context // encapsulate the original context
@@ -45,6 +54,7 @@ func StartServ(ctx context.Context) {
 	e.GET("/api/v1/list", ListAllSites)
 	e.POST("/api/v1/site", AddMembersHandler)
 	e.GET("/api/v1/ran_url", RandomSite)
+	e.POST("/api/v1/subscribe", SubscribeUpdate)
 
 	go func() {
 		errChan <- e.Start(fmt.Sprintf("%s:%s", config.Cfg.Address, config.Cfg.Port))
@@ -112,7 +122,7 @@ func RandomSite(c echo.Context) error {
 
 	token, err := NewUserAccess(c)
 	if err != nil {
-		return c.String(http.StatusOK, fmt.Sprintf("[ERROR] %s", err))
+		return c.String(http.StatusBadGateway, storage.ReDBHaveError(err))
 	}
 
 	v, ok := globalServerSessionCache[token]
@@ -128,4 +138,36 @@ func RandomSite(c echo.Context) error {
 	}
 
 	return c.String(http.StatusOK, string(result))
+}
+
+func SubscribeUpdate(c echo.Context) error {
+	cc := c.(*CustomContext)
+	var subs = &storage.SubscribeMembers{}
+	err := c.Bind(subs)
+	if err != nil {
+		return c.String(http.StatusBadRequest,
+			fmt.Sprintf("there is an anomaly in the json you submitted : %s", err))
+	}
+
+	if reflect.DeepEqual(subs, &storage.SubscribeMembers{}) {
+		return c.String(http.StatusBadRequest,
+			fmt.Sprintf("please check the data you submitted\n"))
+	}
+
+	db := cc.GetDBConn()
+	if found, err := db().SelectSubscribe(subs.Mail); err != nil {
+		return c.String(http.StatusBadGateway, storage.ReDBHaveError(err))
+	} else {
+		if found != 0 {
+			return c.String(http.StatusOK, "the record already exists")
+		}
+	}
+
+	err = db().AddSubscribeRoll(*subs)
+	if err != nil {
+		return c.String(http.StatusOK,
+			fmt.Sprintf("an error occurred while adding subscriber : %s\n", err))
+	}
+
+	return c.String(http.StatusOK, "Success")
 }

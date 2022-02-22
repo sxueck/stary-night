@@ -17,6 +17,10 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - name: Change to production api server
+        run: grep -lr 'dev.stary-night.com' ./public/official/ | xargs sed -i "" 's/dev.stary-night.com/www.stary-night.com/g'
+        id: deploy to production
+
       - name: Deploy to OSS
         uses: fangbinwei/aliyun-oss-website-action@v1
         with:

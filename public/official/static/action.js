@@ -1,3 +1,5 @@
+const APIServer = "https://dev.stary-night.com"
+
 async function postData(url = '', data = {}) {
     const resp = await fetch(url, {
         method: 'POST',
@@ -16,9 +18,9 @@ async function postData(url = '', data = {}) {
 function ObtainEmail() {
     let mail = $("#mail").text()
     if (mail === "") {
-        console.log("mail is null");
+        console.log("mail value is null");
         return 0
     }
 
-    postData("https://")
+    postData(APIServer + "/api/v1/subscribe").then(r => "")
 }

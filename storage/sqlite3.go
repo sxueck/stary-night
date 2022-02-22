@@ -108,3 +108,7 @@ func (d *DBConn) MembersCount() int {
 
 	return int(count)
 }
+
+func ReDBHaveError(err error) string {
+	return fmt.Sprintf("[ERROR] the database have error : %s\n",err)
+}
