@@ -5,10 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="changed/tailwind.min.css">
-    <script src="action/index.js"></script>
-
     <style>
         body::-webkit-scrollbar {
             display: none;
@@ -27,9 +24,14 @@
         }
 
     </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="static/side.js"></script>
+    <script src="static/action.js"></script>
 </head>
 <body class="antialiased bg-body text-body font-body">
-<div class="">
+<div>
     <section class="py-8 px-4 lg:px-10 bg-gray-800">
         <nav class="relative flex justify-between items-center">
             <a class="text-2xl text-white font-bold" href="#">
@@ -74,11 +76,13 @@
     </section>
 
     <section class="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden"><img
-            class="hidden lg:block absolute top-0 right-0 h-128 w-128 -mt-52 -mr-52" src="images/lines/circle.svg"
+            class="hidden lg:block absolute top-0 right-0 h-128 w-128 -mt-52 -mr-52"
+            src="images/lines/circle.svg"
             alt=""><img
             class="block absolute bottom-0 left-0 h-24 md:h-32 lg:h-72 lg:ml-24 -mb-8"
             src="images/five-stars.svg" alt=""><img
-            class="block absolute bottom-0 left-0 h-128 w-128 -mb-96 -ml-24" src="images/lines/circle.svg" alt="">
+            class="block absolute bottom-0 left-0 h-128 w-128 -mb-96 -ml-24" src="images/lines/circle.svg"
+            alt="">
         <div class="container px-3 mx-auto">
             <div class="max-w-3xl mx-auto text-center">
                 <span class="text-lg text-blue-400 font-bold"></span>
@@ -97,7 +101,8 @@
     <section class="relative py-20 2xl:py-40 bg-gray-600">
         <div class="hidden lg:block absolute top-0 left-0 h-full bg-gray-800 w-1/2">
             <img class="hidden lg:block absolute top-0 left-0 -ml-32 w-full h-full" src="images/map.svg"
-                 alt=""><img class="hidden lg:block absolute top-0 left-0 mt-40 ml-40" src="images/star-1.svg" alt="">
+                 alt=""><img class="hidden lg:block absolute top-0 left-0 mt-40 ml-40" src="images/star-1.svg"
+                             alt="">
         </div>
         <div class="container px-4 mx-auto">
             <div class="w-full lg:w-1/2 ml-auto">
@@ -269,6 +274,28 @@
         </div>
     </section>
 
+    <section class="py-20 2xl:py-40 bg-gray-800" hidden>
+        <div class="container px-4 mx-auto">
+            <div class="max-w-5xl mx-auto">
+                <div class="relative pt-16 px-6 lg:px-24 pb-20 bg-gray-600 rounded-3xl overflow-hidden">
+                    <img class="absolute top-0 left-0" src="images/lines/blue-half-circle.svg" alt="">
+                    <img class="hidden lg:block absolute top-0 right-0 mt-6 mr-12" src="images/lines/stars.svg" alt="">
+                    <img class="hidden lg:block absolute top-0 right-0 w-96 h-96 -mt-14 -mr-14"
+                         src="images/lines/circle.svg" alt="">
+                    <div class="relative">
+                        <span class="text-base lg:text-lg text-white font-bold">Message</span>
+                        <h3 class="mt-6 mb-12 text-5xl lg:text-6xl text-white font-bold font-heading">
+                            Congratulations</h3>
+                        <p class="text-gray-200">
+                            <span>您已经成功加入我们的</span>
+                            <span class="text-white">订阅列表</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="relative py-20 2xl:py-40 bg-gray-800 overflow-hidden"><img
             class="hidden lg:block absolute top-0 left-0 -ml-64 mt-24" src="images/lines/circle.svg" alt=""><img
             class="hidden lg:block absolute top-0 right-0 w-96 h-96 -mt-40 -mr-32" src="images/lines/circle.svg"
@@ -287,8 +314,12 @@
                             cx="18.5" cy="18.5" r="9.5" fill="#1F40FF" fill-opacity="0.15"></circle><circle
                             cx="18.5" cy="18.5" r="18.5" fill="#1F40FF" fill-opacity="0.06"></circle><circle
                             cx="18.5" cy="18.5" r="2.5" fill="#282C36"></circle></svg></span>
-                            <input class="w-full sm:w-auto mb-4 sm:mb-0 pl-8 sm:pl-4 py-5 rounded-full placeholder-gray-900 font-bold focus:outline-none"
-                                   type="email" placeholder="填写你的邮箱">
+                            <input
+                                    class="w-full sm:w-auto mb-4 sm:mb-0 pl-8 sm:pl-4 py-5 rounded-full placeholder-gray-900 font-bold focus:outline-none"
+                                    type="email"
+                                    id="mail"
+                                    onclick="ObtainEmail()"
+                                    placeholder="填写你的邮箱"/>
                             <button class="w-full sm:w-auto ml-auto px-10 py-5 text-white font-bold bg-blue-500 hover:bg-blue-600 rounded-full transition duration-200">
                                 START
                             </button>

@@ -3,7 +3,7 @@ name: project-official-deploy
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
@@ -17,6 +17,10 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - name: Change to production api server
+        run: sed -i 's/dev.stary-night.com/www.stary-night.com/g' `grep -lr 'dev.stary-night.com' public/official/static`
+        id: deploy_to_production
+
       - name: Deploy to OSS
         uses: fangbinwei/aliyun-oss-website-action@v1
         with:
@@ -24,4 +28,4 @@ jobs:
           accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
           bucket: ${{ secrets.OSS_NAME }}
           endpoint: oss-cn-hongkong.aliyuncs.com
-          folder: ./public/stars
+          folder: ./public/official
