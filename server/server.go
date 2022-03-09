@@ -50,11 +50,11 @@ func StartServ(ctx context.Context) {
 		}
 	})
 
-	e.Static("/", "public")
 	e.GET("/api/v1/list", ListAllSites)
 	e.POST("/api/v1/site", AddMembersHandler)
 	e.GET("/api/v1/ran_url", RandomSite)
 	e.POST("/api/v1/subscribe", SubscribeUpdate)
+	e.Static("/", "public")
 
 	go func() {
 		errChan <- e.Start(fmt.Sprintf("%s:%s", config.Cfg.Address, config.Cfg.Port))
@@ -85,6 +85,11 @@ func ListAllSites(c echo.Context) error {
 }
 
 func AddMembersHandler(c echo.Context) error {
+	// debug
+	//body, _ := ioutil.ReadAll(c.Request().Body)
+	//log.Println(string(body))
+	//c.Request().Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
 	cc := c.(*CustomContext)
 	var ds = storage.DescribeSitesInfo{}
 	err := c.Bind(&ds)

@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>新成员收录入口</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
-<body class="antialiased bg-body text-body font-body">
-<div class="">
+<body class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center relative overflow-hidden sm:py-12">
+<div>
     <section class="relative py-20">
         <div class="container px-4 mx-auto">
             <div class="w-full lg:w-1/2 mb-12">
@@ -19,23 +20,26 @@
                         <span class="text-sm text-gray-500 font-semibold uppercase">Welcome</span>
                         <h3 class="mb-8 text-2xl font-bold font-heading">Join our community</h3>
                         <div class="flex">
-                            <input class="w-1/2 mr-2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                            <input id="uid" class="w-1/2 mr-2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
                                    placeholder="ID">
-                            <input class="w-1/2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                            <input id="mail" class="w-1/2 py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
                                    placeholder="邮件地址">
                         </div>
-                        <input class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="url"
-                               placeholder="网站首页URL" />
-                        <input class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
-                               placeholder="给你的站点来句台词吧" />
+                        <input id="url" class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="url"
+                               placeholder="网站首页URL"/>
+                        <input id="remark" class="w-full py-3 pl-3 mb-4 bg-white border rounded-lg" type="text"
+                               placeholder="给你的站点来句台词吧"/>
                         <label class="inline-block mb-4">
-                            <input class="mr-1" type="checkbox" name="terms" value="1">
-                            <span class="text-sm text-gray-500">我同意遵循 <b>Stary-Night</b> 计划的</span>
+                            <input id="eula_status" class="mr-1" type="checkbox" name="terms" value="1" checked
+                                   onclick="eula()">
+                            <span class="remark text-sm text-gray-500">我同意遵循 <b>Stary-Night</b> 计划的相关守则</span>
                         </label>
-                        <button class="block w-full mb-4 py-3 text-gray-50 font-semibold bg-gray-500 hover:bg-gray-600 rounded">
+                        <button id="post_button"
+                                class="block w-full mb-4 py-3 text-gray-50 font-semibold bg-blue-500 hover:bg-blue-600 rounded"
+                                onclick="post_sites_describe()">
                             Get Started
                         </button>
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-yellow-500">
                             <span>爬虫将会用于存活检测等合法公开用途</span>
                         </p>
                     </div>
@@ -43,9 +47,51 @@
             </div>
         </div>
         <div class="bg-no-repeat bg-center lg:h-auto lg:absolute top-0 right-0 bottom-0 lg:w-1/2 bg-cover"
-             style="background-image: url('./static/images/banner.png');height: 105%"></div>
+             style="background-image: url('static/images/banner.png');height: 105%"></div>
+
+        <div id="success_hint" class="fixed bottom-0 left-0 z-50 p-10" hidden>
+            <div class="py-10 px-8 bg-blue-900">
+                <div class="flex flex-wrap items-center max-w-2xl">
+                    <div class="w-full md:w-3/5 px-4 mb-2 lg:mb-0">
+                        <h3 class="mb-2 text-2xl font-semibold text-white">Congratulations :)</h3>
+                        <p class="text-sm text-blue-200 leading-loose">
+                            我们已经成功接收到了您的申请
+                            <br/>
+                            可以跳转查看当前申请进度，或者查看项目 Github 首页</p>
+                    </div>
+                    <div class="w-full md:w-2/5 px-4 flex items-center"><a
+                            class="inline-block px-8 py-5 mr-2 text-sm leading-normal uppercase bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold border-2 border-transparent"
+                            href="dir.html">View</a><a
+                            class="inline-block px-8 py-5 text-sm leading-normal uppercase bg-transparent text-white hover:text-blue-200 font-bold border-2 border-white"
+                            href="https://github.com/sxueck/stary-night">Github</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="failed_hint" class="fixed bottom-0 left-0 z-50 p-10" hidden>
+            <div class="py-10 px-8" style="background: #CD5C5C">
+                <div class="flex flex-wrap items-center max-w-2xl">
+                    <div class="w-full md:w-3/5 px-4 mb-2 lg:mb-0">
+                        <h3 class="mb-2 text-2xl font-semibold text-white">报错了</h3>
+                        <p class="text-sm text-blue-100 leading-loose">
+                            您可能遇到了一些错误，可以携带下面错误日志寻求帮助
+                            <br/>
+                            <div id="error">
+                            </div>
+                        </p>
+                    </div>
+                    <div class="w-full md:w-2/5 px-4 flex items-center"><a
+                            class="inline-block px-8 py-5 mr-2 text-sm leading-normal uppercase bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold border-2 border-transparent"
+                            onclick="review()">REVIEW</a><a
+                            class="inline-block px-8 py-5 text-sm leading-normal uppercase bg-transparent text-white hover:text-blue-200 font-bold border-2 border-white"
+                            href="https://github.com/sxueck/stary-night/issues">HELP</a></div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 </body>
 
+<script src="static/action/axios.min.js"></script>
+<script src="static/assets/addsites.js"></script>
 </html>

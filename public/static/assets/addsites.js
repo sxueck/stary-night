@@ -1,42 +1,58 @@
 function post_sites_describe() {
-    let url = $("#url").val()
-    let author = $("#author").val()
-    let contact = $("#contact").val()
-    let description = $("#description").val()
+    let uid = $("#uid").value;
+    let mail = $("#mail").value;
+    let url = $("#url").value;
+    let remark = $("#remark").value;
 
-    $("#remind").text("系统正在检查您的网站")
-
-    $.ajax({
-        url: "/api/v1/site",
+    axios({
         method: "POST",
-        dataType: "text",
-        contentType: "application/json; charset=utf-8",
-        async: false,
-        data: JSON.stringify({
-            url: url,
-            author: author,
-            contact: contact,
-            description: description
-        }),
-        success: function (res) {
-            if (res.indexOf("[ERROR]") === -1) {
-                $("#welcome-look").text("赞 比超棒还棒")
-                $("#welcome-who").text(res + " 里边请")
-                $("#remind").text("添加成功, 请等待下一个轮询器周期结束(~20min)即可")
-                window.setTimeout(BackReturn, 2000);
-            } else {
-                $("#welcome-who").text("这是详细的错误消息")
-                $("#welcome-prompt").text(res)
-            }
+        headers: {
+            'Content-Type': 'application/json',
         },
-        error: function (e) {
-            $("#welcome-who").text("嘿朋友 也许出现了点问题")
-            $("#welcome-prompt").text("快来检查下自己的输入")
-            console.log(e)
+        transformRequest: [function (data) {
+            data = JSON.stringify(data)
+            return data
+        }],
+        params: {},
+        url: "/api/v1/site",
+        data: {
+            author: uid,
+            contact: mail,
+            description: remark,
+            url: url,
         }
     })
+        .then(function (res) {
+            console.log(res);
+            if (res.statusText === "OK") {
+                // success
+                $("#success_hint").hidden = false;
+            } else {
+                // failed
+                $("#failed_hint").hidden = false;
+                $("#error").innerText = res.statusText;
+            }
+        })
+        .catch(function (e) {
+            $("#failed_hint").hidden = false;
+            $("#error").innerText = e;
+        })
 }
 
-function BackReturn() {
-    window.history.go(-1)
+function eula() {
+    let btn = $("#post_button")
+    let s = $("#eula_status");
+
+    if (!s.checked) {
+        btn.disabled = true;
+        btn.style.background = "gray";
+        btn.innerText = "PROGRAM DISABLED"
+
+        $(".remark").innerHTML = "请刷新网页后重试";
+        s.hidden = true;
+    }
+}
+
+function review() {
+    $("#failed_hint").hidden = true;
 }
