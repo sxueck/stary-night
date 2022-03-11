@@ -1,8 +1,10 @@
-module lightning
+module stary-night
 
 go 1.17
 
 require (
+	github.com/emersion/go-sasl v0.0.0-20211008083017-0b9dcfb154ac
+	github.com/emersion/go-smtp v0.15.0
 	github.com/go-shiori/go-readability v0.0.0-20210627123243-82cc33435520
 	github.com/labstack/echo/v4 v4.6.2
 	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
